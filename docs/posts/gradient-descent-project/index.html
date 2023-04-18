@@ -216,8 +216,9 @@ background-size: cover;
 
 <section id="gradient-descent" class="level1">
 <h1>Gradient Descent</h1>
+<p>In this blog, I will demonstrate how to implement gradient descent along with stochastic gradient descent. Gradient descent is the process in which we adjust the weights of our perceptron model thorugh the equation w = w - alpha * gradient. I will represent my findings using graphs along with explaining my processes throughout the blog.</p>
 <p>Here, I retrieve my data set be importing it through one of sklearn’s datasets. The data set chosen has two features (feature 1 and feature 2) which are displayed in the graph shown after running the code cell below. Additionally, I have also imported my logisticRegression source code which can be found using the following link: https://github.com/dmsmith25/dmsmith25.github.io/blob/7eeef82cbf16398e0d0e9900e31df7dd50b99e12/posts/gradient-descent-project/logisticRegression.py</p>
-<div class="cell" data-execution_count="143">
+<div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_blobs</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> pyplot <span class="im">as</span> plt</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -237,7 +238,7 @@ background-size: cover;
 </div>
 </div>
 <p>In the code cell below, I initialize my logisticRegression instance LR using my imported source code. Then, I fit my logisticRegression model to my dataset. In my source code, the fit function uses gradient descent to adjust the weight of the logisticRegression model to accurately classify points from the dataset.</p>
-<div class="cell" data-execution_count="144">
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>LR <span class="op">=</span> LogisticRegression()</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>LR.fit(X, y, alpha<span class="op">=</span><span class="fl">0.1</span>, max_epochs<span class="op">=</span><span class="dv">1000</span>)</span>
@@ -253,7 +254,7 @@ background-size: cover;
 </div>
 </div>
 <p>To see the performance of the logisticRegression model, the code cell below shows the line formed from the weights of the now fitted model and the emperical risk with respect to iterations in the fitting phase.</p>
-<div class="cell" data-execution_count="145">
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>loss <span class="op">=</span> LR.prev_loss</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>fig, axarr <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>)</span>
@@ -276,7 +277,7 @@ background-size: cover;
 </div>
 </div>
 <p>Finally, I introduce a modified form of gradient descent called stochastic gradient descent. In stochastic gradient descent, my model does not calculate the full gradient and instead calculates the gradient of batches of my dataset. Visually, the chart below shows the loss with respect to iterations between gradient descent and stochastic gradient descent.</p>
-<div class="cell" data-execution_count="148">
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>LRS <span class="op">=</span> LogisticRegression()</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>LRS.fit_stochastic(X, y, </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                  m_epochs <span class="op">=</span> <span class="dv">1000</span>,  </span>
@@ -295,11 +296,15 @@ background-size: cover;
 <span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>plt.loglog()</span>
 <span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>legend <span class="op">=</span> plt.legend() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>xlab <span class="op">=</span> plt.xlabel(<span class="st">"Iterations"</span>)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>ylab <span class="op">=</span> plt.ylabel(<span class="st">"Loss"</span>)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>legend <span class="op">=</span> plt.legend() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><img src="index_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
 </div>
 </div>
+<p>To conclude, we found that through gradient descent we were able to minimize our emperical risk with our convex loss function sigmoid. We implemented gradient descent on some sample data and represented our findings in graphs. Lastly, we implemented stochastic gradient descent which calculates the partial gradient lightening the computation load on our program.</p>
 
 
 </section>

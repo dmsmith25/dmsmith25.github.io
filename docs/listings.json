@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/linear-regression-project/index.html",
       "/posts/perceptron-project/test.html",
       "/posts/penguins-project/index.html",
       "/posts/gradient-descent-project/index.html",
