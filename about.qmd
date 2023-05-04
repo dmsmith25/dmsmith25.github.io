@@ -1,19 +1,21 @@
 ---
 title: "About"
-image: profile.jpg
+image: headshot.png
 about:
   template: jolla
   links:
     - icon: twitter
       text: Twitter
-      href: https://twitter.com
+      href: https://twitter.com/DeanSmi69777318
     - icon: linkedin
       text: LinkedIn
-      href: https://linkedin.com
+      href: https://www.linkedin.com/in/dean-smith-622b46206/
     - icon: github
       text: Github
-      href: https://github.com
+      href: https://github.com/dmsmith25
 
 ---
 
 About this blog
+
+I made this blog in my CSCI 451 class to share my projects on Machine Learning topics.

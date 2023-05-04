@@ -21,32 +21,11 @@
     "text": "In this blog, I will demonstrate how to implement gradient descent along with stochastic gradient descent. Gradient descent is the process in which we adjust the weights of our perceptron model thorugh the equation w = w - alpha * gradient. I will represent my findings using graphs along with explaining my processes throughout the blog.\nHere, I retrieve my data set be importing it through one of sklearn’s datasets. The data set chosen has two features (feature 1 and feature 2) which are displayed in the graph shown after running the code cell below. Additionally, I have also imported my logisticRegression source code which can be found using the following link: https://github.com/dmsmith25/dmsmith25.github.io/blob/7eeef82cbf16398e0d0e9900e31df7dd50b99e12/posts/gradient-descent-project/logisticRegression.py\n\nfrom sklearn.datasets import make_blobs\nfrom matplotlib import pyplot as plt\nimport numpy as np\nfrom logisticRegression import LogisticRegression\n\nnp.seterr(all='ignore') \n\n# make the data\np_features = 3\nX, y = make_blobs(n_samples = 200, n_features = p_features - 1, centers = [(-1, -1), (1, 1)])\n\nfig = plt.scatter(X[:,0], X[:,1], c = y)\nxlab = plt.xlabel(\"Feature 1\")\nylab = plt.ylabel(\"Feature 2\")\n\n\n\n\nIn the code cell below, I initialize my logisticRegression instance LR using my imported source code. Then, I fit my logisticRegression model to my dataset. In my source code, the fit function uses gradient descent to adjust the weight of the logisticRegression model to accurately classify points from the dataset.\n\nLR = LogisticRegression()\n\nLR.fit(X, y, alpha=0.1, max_epochs=1000)\n\n# inspect the fitted value of w for LR\nLR.w \n\nfig = plt.scatter(X[:,0], X[:,1], c = y)\nxlab = plt.xlabel(\"Feature 1\")\nylab = plt.ylabel(\"Feature 2\")\n\n\n\n\nTo see the performance of the logisticRegression model, the code cell below shows the line formed from the weights of the now fitted model and the emperical risk with respect to iterations in the fitting phase.\n\nloss = LR.prev_loss\n\nfig, axarr = plt.subplots(1, 2)\n\naxarr[0].scatter(X[:,0], X[:,1], c = y)\naxarr[0].set(xlabel = \"Feature 1\", ylabel = \"Feature 2\", title = f\"Loss = {loss}\")\n\nf1 = np.linspace(-3, 3, 101)\n\np = axarr[0].plot(f1, (-f1*LR.w[0])/LR.w[1], color = \"black\")\n\nnum_steps = len(LR.loss_history)\naxarr[1].plot(np.arange(num_steps) + 1, LR.loss_history, label = \"stochastic gradient\")\n\n#axarr[1].plot(LRS.loss_history)\naxarr[1].set(xlabel = \"Iteration number\", ylabel = \"Empirical Risk\")\nplt.tight_layout()\n\n\n\n\nFinally, I introduce a modified form of gradient descent called stochastic gradient descent. In stochastic gradient descent, my model does not calculate the full gradient and instead calculates the gradient of batches of my dataset. Visually, the chart below shows the loss with respect to iterations between gradient descent and stochastic gradient descent.\n\nLRS = LogisticRegression()\nLRS.fit_stochastic(X, y, \n                  m_epochs = 1000,  \n                  batch_size = 10, \n                  alpha = 0.1)\n\nnum_steps = len(LRS.loss_history)\nplt.plot(np.arange(num_steps) + 1, LRS.loss_history, label = \"stochastic gradient\")\n\nLR = LogisticRegression()\nLR.fit(X, y, \n                  max_epochs = 1000,\n                  alpha = 1.0)\nnum_steps = len(LR.loss_history)\nplt.plot(np.arange(num_steps) + 1, LR.loss_history, label = \"gradient\")\n\nplt.loglog()\n\nxlab = plt.xlabel(\"Iterations\")\nylab = plt.ylabel(\"Loss\")\n\nlegend = plt.legend() \n\n\n\n\nTo conclude, we found that through gradient descent we were able to minimize our emperical risk with our convex loss function sigmoid. We implemented gradient descent on some sample data and represented our findings in graphs. Lastly, we implemented stochastic gradient descent which calculates the partial gradient lightening the computation load on our program."
   },
   {
-    "objectID": "posts/perceptron-project/test.html",
-    "href": "posts/perceptron-project/test.html",
-    "title": "My Awesome CSCI 0451 Blog",
-    "section": "",
-    "text": "p = Perceptron()\nmax_steps = 1000\np.fit(X, y, max_steps)\n\nprint(p.history[-10:])\n\n[0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 0.99, 1.0]\n\n\n\nfig = plt.plot(p.history)\nxlab = plt.xlabel(\"Iteration\")\nylab = plt.ylabel(\"Accuracy\")\n\n\n\n\n\ndef draw_line(w, x_min, x_max,ax=None , style=\"solid\"):\n  x = np.linspace(x_min, x_max, 101)\n  y = -(w[0]*x + w[2])/w[1]\n  if ax is None:\n    if style == \"solid\":\n      plt.plot(x, y, color = \"black\")\n    if style == \"dashed\":\n      plt.plot(x, y, \"k--\")\n  else:\n    ax.plot(x, y, color = \"black\")\n\nfig = plt.scatter(X[:,0], X[:,1], c = y)\nfig = draw_line(p.w, -2, 2)\n\nxlab = plt.xlabel(\"Feature 1\")\nylab = plt.ylabel(\"Feature 2\")\n\n\n\n\n\np.score(X, y)\n\n1.0\n\n\n\nfig = plt.scatter(X[:,0], X[:,1], c = y)\nfig = draw_line(p.weight_history[600], -2, 2)\nxlab = plt.xlabel(\"Feature 1\")\nylab = plt.ylabel(\"Feature 2\")"
-  },
-  {
     "objectID": "posts/perceptron-project/index.html",
     "href": "posts/perceptron-project/index.html",
     "title": "Perceptron Blog",
     "section": "",
     "text": "Runtime Analysis\nFor each update of the perceptron, it will take O(p) runtime because the number of datapoints is irrelevant when talking about just a singular update. In each update, the runtime is dependant on the number of features or columns of the matricies being multiplied.\nIn my findings, I was able to implement the perceptron algorithm and test it on various types of data. When data is linearly seperable, the perceptron will be able to classify data with 100% accuracy. If data is not linearly seperable then it will find the “line of best fit” for that particular dataset. The perceptron can be used on datasets with many features and the implementation will still stay the same but visualizing results will be increasingly difficult."
-  },
-  {
-    "objectID": "posts/example-blog-post/index.html",
-    "href": "posts/example-blog-post/index.html",
-    "title": "Hello Blog",
-    "section": "",
-    "text": "This is an example of the blog posts that you’ll submit as your primary form of learning demonstration in CSCI 0451. I created this post by modifying the file posts/example-blog-post/index.ipynb in VSCode. You can also use JupyterLab for this editing if you prefer. Finally, it is possible to write blog posts without using notebooks by writing .qmd files, as illustrated here."
-  },
-  {
-    "objectID": "posts/example-blog-post/index.html#math",
-    "href": "posts/example-blog-post/index.html#math",
-    "title": "Hello Blog",
-    "section": "Math",
-    "text": "Math\nIn addition to regular text using the Markdown specification, you can also write mathematics, enclosed between dollar signs. The syntax for writing math is very similar to the syntax used in the \\(\\LaTeX\\) markup language. For example, $f(x) \\approx y$ renders to \\(f(x) \\approx y\\). To place complex mathematical expressions on their own lines, use double dollar signs. For example, the expression\n$$\\mathcal{L}(a, b) = \\sum_{i = 1}^n (ax_i + b - y_i)^2$$\nrenders to:\n\\[\\mathcal{L}(a, b) = \\sum_{i = 1}^n (ax_i + b - y_i)^2\\;.\\]\nBehind the scenes, math is powered by the MathJax engine. For more on how to write math, check this handy tutorial and quick reference."
   },
   {
     "objectID": "posts/penguins-project/index.html",
@@ -58,15 +37,15 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "My Awesome CSCI 0451 Blog",
+    "title": "Dean Smith’s CSCI 0451 Blog",
     "section": "",
-    "text": "In this blog I show the effectiveness of least-squares linear regression and LASSO regularization\n\n\n\n\n\n\nMay 2, 2023\n\n\nDean Smith\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\nA reflection of what I have learned from Timnit Gebru’s experience and talk with our class.\n\n\n\n\n\n\nApr 19, 2023\n\n\nDean Smith\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\nIn this blog I build a model to classify different penguins\n\n\n\n\n\n\nApr 18, 2023\n\n\nDean Smith\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\nIn this blog I build and implement a classification model using gradient descent\n\n\n\n\n\n\nApr 7, 2023\n\n\nDean Smith\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\nIn this blog I build and implement a simple perceptron model\n\n\n\n\n\n\nFeb 22, 2023\n\n\nDean Smith\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\nAn example blog post illustrating the key techniques you’ll need to demonstrate your learning in CSCI 0451.\n\n\n\n\n\n\nJan 10, 2023\n\n\nPhil Chodrow\n\n\n\n\n\n\nNo matching items"
+    "text": "In this blog I show the effectiveness of least-squares linear regression and LASSO regularization\n\n\n\n\n\n\nMay 2, 2023\n\n\nDean Smith\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\nA reflection of what I have learned from Timnit Gebru’s experience and talk with our class.\n\n\n\n\n\n\nApr 19, 2023\n\n\nDean Smith\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\nIn this blog I build a model to classify different penguins\n\n\n\n\n\n\nApr 18, 2023\n\n\nDean Smith\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\nIn this blog I build and implement a classification model using gradient descent\n\n\n\n\n\n\nApr 7, 2023\n\n\nDean Smith\n\n\n\n\n\n\n  \n\n\n\n\n\n\n\n\nIn this blog I build and implement a simple perceptron model\n\n\n\n\n\n\nFeb 22, 2023\n\n\nDean Smith\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this blog"
+    "text": "I made this blog in my CSCI 451 class to share my projects on Machine Learning topics."
   }
 ]
